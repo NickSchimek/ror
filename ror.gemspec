@@ -10,7 +10,8 @@ Gem::Specification.new do |spec|
   spec.email         = ["schimeknicholas@gmail.com"]
 
   spec.summary       = %q{A CLI tool that displays required and optional parameters for rails methods.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.description   = %q{ A convenient way to look up the syntax and parameters for rails methods.
+                           This is not a replacement for actual Rails documentation. Please read the docs. }
   spec.homepage      = "https://github.com/NickSchimek/ror"
   spec.license       = "MIT"
 
