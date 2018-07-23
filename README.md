@@ -6,6 +6,8 @@ Why is this needed? If your a full-time rails developer you may not need this, b
 
 Currently the ror CLI contains very few methods as method information is not pulled from any online resource since it is 100% manual entry. It is this way for one main reason, and that is so that any individual who wishes to contribute (including yours truly) can learn about rails methods while contributing to a gem.
 
+I feel the most can be gained when the user tries to recall the syntax/parameters for a method, before using this tool. The more that is done the faster the contents of this tool will be learned.
+
 Please visit and dive deep into the [Rails guide and documentation](http://guides.rubyonrails.org/). If you find this useful and would like to contribute please see [Contributing](#contributing).
 
 ## Installation
