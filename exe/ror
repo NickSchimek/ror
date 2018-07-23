@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+require 'ror/cli'
+Ror::CLI.start
