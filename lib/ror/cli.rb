@@ -4,11 +4,8 @@ module Ror
   class CLI < Thor
     desc "m METHOD CLASS", "Display info for the desired method"
     def m method, klass = nil
-      unless klass
-          puts "Which #{method} method?" #TODO
-      else
-        puts ror_class(klass).send method
-      end
+      # TODO: infer klass unless klass.
+      klass ? puts(ror_class(klass).send method) : puts("Which #{method} method?") #TODO:
     end
 
     private
