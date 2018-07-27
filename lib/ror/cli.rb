@@ -6,7 +6,7 @@ module Ror
     desc "m METHOD CLASS", "Display info for the desired method"
     def m modus, klass = nil
       klass = get_klass modus unless klass
-      IO.popen("less", "w") { |f| f.puts valuable_information(modus, klass) }
+      IO.popen("less", "w") { |f| f.puts IO.read(valuable_information(modus, klass)) }
     end
 
     private
