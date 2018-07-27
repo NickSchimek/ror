@@ -3,7 +3,7 @@ RSpec.describe Ror do
     expect(Ror::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "has a list of supported methods" do
+    expect(Ror::SupportedMethods).to be_truthy
   end
 end
