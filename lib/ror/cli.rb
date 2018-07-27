@@ -1,23 +1,66 @@
 require 'ror'
 require 'thor'
+
 module Ror
   class CLI < Thor
     desc "m METHOD CLASS", "Display info for the desired method"
-    def m method, klass = nil
-      # TODO: infer klass unless klass.
-      klass ? puts(ror_class(klass).send method) : puts("Which #{method} method?") #TODO:
+    def m modus, klass = nil
+      klass = get_klass modus unless klass
+      puts valuable_information modus, klass
     end
 
     private
+      def valuable_information modus, klass
+        puts ror_class(klass).send modus
+      end
+
       def ror_class klass
         case klass
-        when 'view'
+        when 'view', 'v'
           Ror::Actionview
-        when 'controller'
+        when 'controller', 'c'
           Ror::Actioncontroller
         else
           puts "Undefined class option: Use 'ror m METHOD' to view class options."
         end
+      end
+
+      def get_klass modus
+        class_list = list_of modus
+        extract_class class_list, modus
+      end
+
+      def list_of modus
+        Ror::SupportedMethods.send modus
+      end
+
+      def extract_class class_list, modus
+        method_belongs_to_one_class?(class_list) ? class_list.first : ask_user(class_list, modus)
+      end
+
+      def method_belongs_to_one_class? class_list
+        class_list.length == 1
+      end
+
+      def ask_user class_list, modus
+        puts "\nMultiple classes contain the #{modus} method.\nFor the:"
+        class_list.each do |klass|
+          puts send(klass)
+        end
+        puts "\nPlease choose a class for the #{modus} method? "
+        retrieve_selection
+      end
+
+      def retrieve_selection
+        STDIN.gets.chomp
+      end
+
+      def actionview
+        "Actionview type 'view' or 'v'"
+      end
+
+      def actioncontroller
+        "Actioncontroller type 'controller' or 'c'"
       end
   end
 end
