@@ -16,29 +16,29 @@ Feature: Display method render
     Then the output should contain "render '<:view>'"
 
   Scenario: Displays the views render method when I type 'v' after the prompt
-    When I run `ror m render`
-    Then the output should contain "Which render method?"
-    And the output should contain "Actionview type 'view' or 'v'"
-    When I type "v"
-    Then the output should contain "partial: '<relative_file_name>'"
+    When I run `ror m render` interactively
+    And I type "v"
+    Then the output should contain "Actionview type 'view' or 'v'"
+    And the output should contain "Please choose a class for the render method"
+    And the output should contain "partial: '<relative_file_name>'"
 
   Scenario: Displays the views render method when I type 'view' after the prompt
-    When I run `ror m render`
-    Then the output should contain "Which render method?"
-    And the output should contain "Actionview type 'view' or 'v'"
+    When I run `ror m render` interactively
     When I type "view"
-    Then the output should contain "partial: '<relative_file_name>'"
+    Then the output should contain "Please choose a class for the render method? "
+    And the output should contain "Actionview type 'view' or 'v'"
+    And the output should contain "partial: '<relative_file_name>'"
 
   Scenario: Displays the views render method when I type 'c' after the prompt
-    When I run `ror m render`
-    Then the output should contain "Which render method?"
+    When I run `ror m render` interactively
+    And I type "c"
+    Then the output should contain "Please choose a class for the render method? "
     And the output should contain "Actioncontroller type 'controller' or 'c'"
-    When I type "c"
-    Then the output should contain "render '<:view>'"
+    And the output should contain "render '<:view>'"
 
   Scenario: Displays the views render method when I type 'controller' after the prompt
-    When I run `ror m render`
-    Then the output should contain "Which render method?"
+    When I run `ror m render` interactively
+    And I type "controller"
+    Then the output should contain "Please choose a class for the render method? "
     And the output should contain "Actioncontroller type 'controller' or 'c'"
-    When I type "controller"
-    Then the output should contain "render '<:view>'"
+    And the output should contain "render '<:view>'"
