@@ -6,12 +6,12 @@ module Ror
     desc "m METHOD CLASS", "Display info for the desired method"
     def m modus, klass = nil
       klass = get_klass modus unless klass
-      puts valuable_information modus, klass
+      IO.popen("less", "w") { |f| f.puts valuable_information(modus, klass) }
     end
 
     private
       def valuable_information modus, klass
-        puts ror_class(klass).send modus
+        ror_class(klass).send modus
       end
 
       def ror_class klass
@@ -43,11 +43,11 @@ module Ror
       end
 
       def ask_user class_list, modus
-        puts "\nMultiple classes contain the #{modus} method.\nFor the:"
+        puts "\nMultiple classes contain the #{modus} method.\nFor:"
         class_list.each do |klass|
           puts send(klass)
         end
-        puts "\nPlease choose a class for the #{modus} method? "
+        print "\nPlease choose a class for the #{modus} method? "
         retrieve_selection
       end
 
