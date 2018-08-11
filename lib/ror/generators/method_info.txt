@@ -1,0 +1,15 @@
+Method: bob
+ Class: <%= name[index].capitalize %>
+
+Syntax: TODO: (Fill in method syntax)
+
+Description: TODO: (Fill in short description)
+
+Params: TODO: (Fill in and explain Params)
+
+Options: TODO: (Fill in and explain any available options)
+
+Examples: TODO: (Please provide some examples)
+
+Link to documentation: TODO: (Insert a direct link to the documentation for this
+                              method. Preferably the rails guide, api or both!)

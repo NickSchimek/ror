@@ -9,6 +9,11 @@ module Ror
       IO.popen("less", "w") { |f| f.puts IO.read(valuable_information(modus, klass)) }
     end
 
+    desc "new_method", "Generates a scaffold for adding new methods"
+    def new_method group, *name
+      Ror::Generators::NewMethod.start([group, name])
+    end
+
     private
       def valuable_information modus, klass
         ror_class(klass).send modus
