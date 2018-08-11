@@ -16,17 +16,17 @@ module Ror
 
     private
       def display_method_information modus, klass
-        ror_class(klass).send modus
+        ror_class(klass, modus).send modus
       end
 
-      def ror_class klass
+      def ror_class klass, modus
         case klass
         when 'view', 'v'
           Ror::Actionview
         when 'controller', 'c'
           Ror::Actioncontroller
         else
-          puts "Undefined class option: Use 'ror info METHOD' to view class options."
+          puts "Undefined class option: Use 'ror info #{modus}' to view class options."
         end
       end
 

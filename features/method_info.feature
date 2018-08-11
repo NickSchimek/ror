@@ -9,7 +9,7 @@ Feature: Display method render
 
   Scenario: Responds to invalid klass option
     When I run `ror info render DHH`
-    Then the output should contain "Undefined class option: Use 'ror info METHOD' to view class options."
+    Then the output should contain "Undefined class option: Use 'ror info render' to view class options."
 
   Scenario: Display Actioncontrollers render method
     When I run `ror info render controller`
