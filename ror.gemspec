@@ -34,8 +34,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler",  "~> 1.16"
   spec.add_development_dependency "rake",     "~> 10.0"
   spec.add_development_dependency "rspec",    "~> 3.0"
-  spec.add_development_dependency 'cucumber', '~> 3.1', '>= 3.1.2'
-  spec.add_development_dependency 'aruba',    '~> 0.14.6'
+  spec.add_development_dependency 'cucumber', '>= 2.4.0'
+  spec.add_development_dependency 'aruba',    '~> 1.0.0.pre.alpha.2'
 
   spec.add_dependency 'thor', '~> 0.20.0'
 end
