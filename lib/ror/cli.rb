@@ -3,8 +3,8 @@ require 'thor'
 
 module Ror
   class CLI < Thor
-    desc "m METHOD CLASS", "Display info for the desired method"
-    def m modus, klass = nil
+    desc "info METHOD CLASS", "Display info for the desired method"
+    def info modus, klass = nil
       klass = get_klass modus unless klass
       IO.popen("less", "w") { |f| f.puts IO.read(valuable_information(modus, klass)) }
     end
@@ -21,7 +21,7 @@ module Ror
         when 'controller', 'c'
           Ror::Actioncontroller
         else
-          puts "Undefined class option: Use 'ror m METHOD' to view class options."
+          puts "Undefined class option: Use 'ror info METHOD' to view class options."
         end
       end
 
