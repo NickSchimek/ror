@@ -6,7 +6,7 @@ module Ror
     desc "info METHOD CLASS", "Display info for the desired method"
     def info modus, klass = nil
       klass = get_klass modus unless klass
-      IO.popen("less", "w") { |f| f.puts IO.read(valuable_information(modus, klass)) }
+      IO.popen("less", "w") { |f| f.puts IO.read(display_method_information(modus, klass)) }
     end
 
     desc "new_method", "Generates a scaffold for adding new methods"
@@ -15,7 +15,7 @@ module Ror
     end
 
     private
-      def valuable_information modus, klass
+      def display_method_information modus, klass
         ror_class(klass).send modus
       end
 
