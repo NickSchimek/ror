@@ -43,3 +43,20 @@ Feature: I can make programming easier
       Link to documentation: TODO: (Insert a direct link to the documentation for this
                                     method. Preferably the rails guide, api or both!)
       """
+
+  Scenario: Generates the method for the supported_methods class
+    Given a file named "lib/ror/supported_methods.rb" with:
+      """
+      module Ror
+        class SupportedMethods
+
+        end
+      end
+      """
+    When I run `ror new_method bob actioncontroller actionview`
+    Then the file "lib/ror/supported_methods.rb" should contain:
+      """
+          def self.bob
+            [:actioncontroller, :actionview]
+          end
+      """
