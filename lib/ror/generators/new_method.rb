@@ -18,7 +18,7 @@ module Ror
 
       def copy_method_info
         name.each do |i|
-          template("method_info.txt", "lib/ror/method_descriptions/#{i}/#{group}.txt")
+          template "method_info.txt", "lib/ror/method_descriptions/#{i}/#{group}.txt"
           @index += 1
         end
         @index = 0
