@@ -10,8 +10,8 @@ module Ror
     end
 
     desc "new_method", "Generates a scaffold for adding new methods"
-    def new_method group, *name
-      Ror::Generators::NewMethod.start([group, name])
+    def new_method group, *names
+      Ror::Generators::NewMethod.start([group, names])
     end
 
     private

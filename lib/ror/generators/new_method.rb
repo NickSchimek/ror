@@ -6,7 +6,7 @@ module Ror
       attr_reader :index
 
       argument :group, :type => :string
-      argument :name, :type => :string
+      argument :names, :type => :string
 
       def initializer
         @index = 0
@@ -17,8 +17,8 @@ module Ror
       end
 
       def copy_method_info
-        name.each do |i|
-          template "method_info.txt", "lib/ror/method_descriptions/#{i}/#{group}.txt"
+        names.each do |name|
+          template "method_info.txt", "lib/ror/method_descriptions/#{name}/#{group}.txt"
           @index += 1
         end
         @index = 0

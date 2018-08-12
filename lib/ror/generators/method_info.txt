@@ -1,5 +1,5 @@
 Method: bob
- Class: <%= name[index].capitalize %>
+ Class: <%= names[index].capitalize %>
 
 Syntax: TODO: (Fill in method syntax)
 
