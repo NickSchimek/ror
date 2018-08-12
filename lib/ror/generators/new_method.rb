@@ -23,6 +23,18 @@ module Ror
         end
         @index = 0
       end
+
+      def add_code
+        inject_into_class "lib/ror/supported_methods.rb", "SupportedMethods" do
+          result = []
+          names.each { |name| result << name.to_sym }
+    """
+    def self.#{group}
+      #{result}
+    end
+    """
+        end
+      end
     end
   end
 end
