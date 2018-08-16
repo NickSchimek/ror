@@ -22,7 +22,7 @@ module Ror
 
       def method_class modus, klass
         result = ror_class klass, modus
-        result.send modus if result
+        result.send :show, modus if result
       end
 
       def ror_class klass, modus

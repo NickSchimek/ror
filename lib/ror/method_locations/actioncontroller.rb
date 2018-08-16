@@ -2,8 +2,8 @@ module Ror
   class Actioncontroller
     METHOD_DESCRIPTION_DIR = 'ror/method_descriptions/actioncontroller'
 
-    def self.render
-      self.file_location 'render.txt'
+    def self.show modus
+      self.file_location "#{modus}.txt"
     end
 
     private
