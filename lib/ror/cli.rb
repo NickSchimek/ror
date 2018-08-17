@@ -3,6 +3,7 @@ require 'thor'
 
 module Ror
   class CLI < Thor
+
     desc "info METHOD CLASS", "Display info for the desired method"
     def info modus, klass = nil
       klass = get_klass modus unless klass
@@ -46,7 +47,7 @@ module Ror
       end
 
       def extract_class class_list, modus
-        method_belongs_to_one_class?(class_list) ? class_list.first : ask_user(class_list, modus)
+        method_belongs_to_one_class?(class_list) ? class_list.first.to_s : ask_user(class_list, modus)
       end
 
       def method_belongs_to_one_class? class_list
