@@ -1,4 +1,4 @@
-Method: bob
+Method: <%= group %>
  Class: <%= names[index].capitalize %>
 
 Syntax: TODO: (Fill in method syntax)
