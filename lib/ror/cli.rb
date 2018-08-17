@@ -27,9 +27,9 @@ module Ror
 
       def ror_class klass, modus
         case klass
-        when 'view', 'v'
+        when 'actionview', 'view', 'v'
           Ror::Actionview
-        when 'controller', 'c'
+        when 'actioncontroller', 'controller', 'c'
           Ror::Actioncontroller
         else
           puts "Undefined class option: Use 'ror info #{modus}' to view class options."
