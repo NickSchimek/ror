@@ -19,4 +19,9 @@ RSpec.describe Ror::CLI do
     allow(Ror::SupportedMethods).to receive(:render).and_raise("NoMethodError").once
     expect { Ror::CLI.new.info 'render', 'actionview' }.to output("Sorry, method not found. Please add it and submit a PR\n").to_stdout
   end
+
+  it 'knows the classes that the method belongs to' do
+    expect(Ror::SupportedMethods).to receive(:render).and_return([:actionview])
+    expect { Ror::CLI.new.info 'render', 'actioncontroller' }.to output("Undefined class option: Use 'ror info render' to view class options.\n").to_stdout
+  end
 end
