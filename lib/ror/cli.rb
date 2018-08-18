@@ -6,8 +6,9 @@ module Ror
 
     desc "info METHOD CLASS", "Display info for the desired method"
     def info modus, klass = nil
-      klass = get_klass modus unless klass
-      display_result modus, klass
+      method_validated = validate? modus
+      klass = get_klass modus if method_validated and !klass
+      method_validated ? display_info(modus, klass) : method_does_not_exist_error
     end
 
     desc "new_method", "Generates a scaffold for adding new methods"
@@ -16,7 +17,7 @@ module Ror
     end
 
     private
-      def display_result modus, klass
+      def display_info modus, klass
         result = method_class modus, klass
         IO.popen("less", "w") { |f| f.puts IO.read(result) } if result
       end
@@ -35,6 +36,18 @@ module Ror
         else
           puts "Undefined class option: Use 'ror info #{modus}' to view class options."
         end
+      end
+
+      def validate? modus
+        begin
+          Ror::SupportedMethods.send modus
+        rescue
+          false
+        end
+      end
+
+      def method_does_not_exist_error
+        puts "Sorry, method not found. Please add it and submit a PR"
       end
 
       def get_klass modus
