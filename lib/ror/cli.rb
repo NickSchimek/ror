@@ -94,16 +94,18 @@ module Ror
       end
 
       def ask_user klasses, modus
-        puts "\nMultiple classes contain the #{modus} method.\nFor:"
-        klasses.each do |klass|
-          puts send(klass)
-        end
-        print "\nPlease choose a class for the #{modus} method? "
+        puts display_message(modus), display_klasses(klasses), ask_for_input(modus)
         retrieve_selection
       end
 
-      def retrieve_selection
-        STDIN.gets.chomp
+      def display_message modus
+        "\nMultiple classes contain the #{modus} method.\nFor:"
+      end
+
+      def display_klasses klasses
+        klasses.each do |klass|
+          puts send(klass)
+        end
       end
 
       def actionview
@@ -112,6 +114,14 @@ module Ror
 
       def actioncontroller
         "Actioncontroller type 'controller' or 'c'"
+      end
+
+      def ask_for_input modus
+        "\nPlease choose a class for the #{modus} method? "
+      end
+
+      def retrieve_selection
+        STDIN.gets.chomp
       end
   end
 end
