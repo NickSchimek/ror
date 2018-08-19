@@ -11,7 +11,8 @@ module Ror
         klass_validated = method_validated.include?(transform(klass))
       end
       if method_validated and !klass
-        klass = get_klass modus
+        klasses = klass_list modus
+        klass = get_klass modus, klasses
         klass_validated = true
       end
       if (method_validated and klass_validated)
@@ -75,26 +76,21 @@ module Ror
         puts "Sorry, method not found. Please add it and submit a PR"
       end
 
-      def get_klass modus
-        class_list = list_of modus
-        extract_class class_list, modus
+      def get_klass modus, klasses
+        method_belongs_to_one_class?(klasses) ? klasses.first.to_s : ask_user(klasses, modus)
       end
 
-      def list_of modus
+      def klass_list modus
         Ror::SupportedMethods.send modus
       end
 
-      def extract_class class_list, modus
-        method_belongs_to_one_class?(class_list) ? class_list.first.to_s : ask_user(class_list, modus)
+      def method_belongs_to_one_class? klasses
+        klasses.length == 1
       end
 
-      def method_belongs_to_one_class? class_list
-        class_list.length == 1
-      end
-
-      def ask_user class_list, modus
+      def ask_user klasses, modus
         puts "\nMultiple classes contain the #{modus} method.\nFor:"
-        class_list.each do |klass|
+        klasses.each do |klass|
           puts send(klass)
         end
         print "\nPlease choose a class for the #{modus} method? "
