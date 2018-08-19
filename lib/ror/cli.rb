@@ -7,14 +7,11 @@ module Ror
     desc "info METHOD CLASS", "Display info for the desired method"
     def info modus, klass = nil
       method_validated = klasses = validate? modus
-      if klass and method_validated
-        klass_validated = method_validated.include?(transform(klass))
-      end
       if method_validated and !klass
         klass = get_klass modus, klasses
         klass_validated = true
       end
-      if (method_validated and klass_validated)
+      if (method_validated and valid_klass? klass, klasses)
         return display_info(modus, klass)
       elsif !method_validated
         return method_does_not_exist_error
@@ -60,6 +57,10 @@ module Ror
         rescue
           false
         end
+      end
+
+      def valid_klass? klass, klasses
+        klasses.include? transform(klass)
       end
 
       def transform klass
