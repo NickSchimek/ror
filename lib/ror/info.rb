@@ -1,20 +1,20 @@
 module Ror
   class Info
 
-    def initialize modus
+    def initialize modus, klass
       @modus = modus
-      #@klass = klass
+      @klass = klass
     end
 
-    def display klass
+    def display
       method_validated = klasses = validate?
-      if system_can_retrieve_class? method_validated, klass
-        klass = get_klass klasses
+      if system_can_retrieve_class? method_validated
+        @klass = get_klass klasses
         klass_validated = true
       end
-      klass_validated = valid_klass?(klass, klasses) if validation_passed? method_validated, !klass_validated
+      klass_validated = valid_klass?(klasses) if validation_passed? method_validated, !klass_validated
       if validation_passed? method_validated, klass_validated
-        return display_info klass
+        return display_info
       elsif !method_validated
         return method_does_not_exist_error
       else
@@ -23,18 +23,18 @@ module Ror
     end
 
     private
-    def display_info klass
-      result = method_class klass
+    def display_info
+      result = method_class
       IO.popen("less", "w") { |f| f.puts IO.read(result) } if result
     end
 
-    def method_class klass
-      result = ror_class klass
+    def method_class
+      result = ror_class
       result.send :show, @modus if result
     end
 
-    def ror_class klass
-      case klass
+    def ror_class
+      case @klass
       when 'actionview', 'view', 'v'
         Ror::Actionview
       when 'actioncontroller', 'controller', 'c'
@@ -48,8 +48,8 @@ module Ror
       puts "Undefined class option: Use 'ror info #{@modus}' to view class options."
     end
 
-    def system_can_retrieve_class? method_validated, klass
-      method_validated and !klass
+    def system_can_retrieve_class? method_validated
+      method_validated and !@klass
     end
 
     def validate?
@@ -60,12 +60,12 @@ module Ror
       end
     end
 
-    def valid_klass? klass, klasses
-      klasses.include? transform(klass)
+    def valid_klass? klasses
+      klasses.include? transform
     end
 
-    def transform klass
-      case klass
+    def transform
+      case @klass
       when 'actionview', 'view', 'v'
         'actionview'.to_sym
       when 'actioncontroller', 'controller', 'c'

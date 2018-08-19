@@ -7,7 +7,7 @@ module Ror
 
     desc "info METHOD CLASS", "Display info for the desired method"
     def info modus, klass = nil
-      Ror::Info.new(modus).display(klass)
+      Ror::Info.new(modus, klass).display
     end
 
     desc "new_method", "Generates a scaffold for adding new methods"
