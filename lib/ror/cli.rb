@@ -82,7 +82,7 @@ module Ror
       end
 
       def method_does_not_exist_error
-        puts "Sorry, method not found. Please add it and submit a PR"
+        puts "Sorry, method not found. Feel free to add it to expand the knowledge store!"
       end
 
       def get_klass modus, klasses

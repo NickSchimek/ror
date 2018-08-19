@@ -12,12 +12,12 @@ RSpec.describe Ror::CLI do
 
   it 'validates method argument' do
     allow(Ror::SupportedMethods).to receive(:render).and_raise("NoMethodError")
-    expect { Ror::CLI.new.info 'render' }.to output("Sorry, method not found. Please add it and submit a PR\n").to_stdout
+    expect { Ror::CLI.new.info 'render' }.to output("Sorry, method not found. Feel free to add it to expand the knowledge store!\n").to_stdout
   end
 
   it 'does not evaluate class with an invalid method' do
     allow(Ror::SupportedMethods).to receive(:render).and_raise("NoMethodError")
-    expect { Ror::CLI.new.info 'render', 'actionview' }.to output("Sorry, method not found. Please add it and submit a PR\n").to_stdout
+    expect { Ror::CLI.new.info 'render', 'actionview' }.to output("Sorry, method not found. Feel free to add it to expand the knowledge store!\n").to_stdout
   end
 
   it 'knows the classes that the method belongs to' do
