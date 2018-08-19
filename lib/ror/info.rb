@@ -4,15 +4,16 @@ module Ror
     def initialize modus, klass
       @modus = modus
       @klass = klass
+      @klasses = klass_list
     end
 
     def display
-      method_validated = klasses = validate?
+      method_validated = @klasses
       if system_can_retrieve_class? method_validated
-        @klass = get_klass klasses
+        @klass = get_klass
         klass_validated = true
       end
-      klass_validated = valid_klass?(klasses) if validation_passed? method_validated, !klass_validated
+      klass_validated = valid_klass? if validation_passed? method_validated, !klass_validated
       if validation_passed? method_validated, klass_validated
         return display_info
       elsif !method_validated
@@ -64,7 +65,7 @@ module Ror
       method_validated and !@klass
     end
 
-    def validate?
+    def klass_list
       begin
         Ror::SupportedMethods.send @modus
       rescue
@@ -72,8 +73,8 @@ module Ror
       end
     end
 
-    def valid_klass? klasses
-      klasses.include? klass_variation
+    def valid_klass?
+      @klasses.include? klass_variation
     end
 
     def klass_variation
@@ -93,16 +94,16 @@ module Ror
       puts "Sorry, method not found. Feel free to add it to expand the knowledge store!"
     end
 
-    def get_klass klasses
-      method_belongs_to_one_class?(klasses) ? klasses.first.to_s : ask_user(klasses)
+    def get_klass
+      method_belongs_to_one_class? ? @klasses.first.to_s : ask_user
     end
 
-    def method_belongs_to_one_class? klasses
-      klasses.length == 1
+    def method_belongs_to_one_class?
+      @klasses.length == 1
     end
 
-    def ask_user klasses
-      puts display_message, display_klasses(klasses), ask_for_input
+    def ask_user
+      puts display_message, display_klasses, ask_for_input
       retrieve_selection
     end
 
@@ -110,8 +111,8 @@ module Ror
       "\nMultiple classes contain the #{@modus} method.\nFor:"
     end
 
-    def display_klasses klasses
-      klasses.each do |klass|
+    def display_klasses
+      @klasses.each do |klass|
         puts send(klass)
       end
     end
