@@ -5,7 +5,7 @@ require 'ror/info'
 module Ror
   class CLI < Thor
 
-    desc "info METHOD CLASS", "Display info for the desired method"
+    desc "info METHOD CLASS", "Displays info for the desired method"
     def info modus, klass = nil
       Ror::Info.new(modus, klass).display
     end
