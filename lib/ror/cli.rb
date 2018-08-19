@@ -6,12 +6,11 @@ module Ror
 
     desc "info METHOD CLASS", "Display info for the desired method"
     def info modus, klass = nil
-      method_validated = validate? modus
+      method_validated = klasses = validate? modus
       if klass and method_validated
         klass_validated = method_validated.include?(transform(klass))
       end
       if method_validated and !klass
-        klasses = klass_list modus
         klass = get_klass modus, klasses
         klass_validated = true
       end
@@ -78,10 +77,6 @@ module Ror
 
       def get_klass modus, klasses
         method_belongs_to_one_class?(klasses) ? klasses.first.to_s : ask_user(klasses, modus)
-      end
-
-      def klass_list modus
-        Ror::SupportedMethods.send modus
       end
 
       def method_belongs_to_one_class? klasses
