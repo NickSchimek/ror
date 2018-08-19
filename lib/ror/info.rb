@@ -7,7 +7,7 @@ module Ror
       @klasses = klass_list
     end
 
-    def display
+    def show
       method_validated = @klasses
       if system_can_retrieve_class? method_validated
         @klass = get_klass
