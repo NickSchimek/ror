@@ -7,8 +7,20 @@ module Ror
     desc "info METHOD CLASS", "Display info for the desired method"
     def info modus, klass = nil
       method_validated = validate? modus
-      klass = get_klass modus if method_validated and !klass
-      method_validated ? display_info(modus, klass) : method_does_not_exist_error
+      if klass and method_validated
+        klass_validated = method_validated.include?(transform(klass))
+      end
+      if method_validated and !klass
+        klass = get_klass modus
+        klass_validated = true
+      end
+      if (method_validated and klass_validated)
+        return display_info(modus, klass)
+      elsif !method_validated
+        return method_does_not_exist_error
+      else
+        display_class_error modus
+      end
     end
 
     desc "new_method", "Generates a scaffold for adding new methods"
@@ -34,8 +46,12 @@ module Ror
         when 'actioncontroller', 'controller', 'c'
           Ror::Actioncontroller
         else
-          puts "Undefined class option: Use 'ror info #{modus}' to view class options."
+          display_class_error modus
         end
+      end
+
+      def display_class_error modus
+        puts "Undefined class option: Use 'ror info #{modus}' to view class options."
       end
 
       def validate? modus
@@ -43,6 +59,15 @@ module Ror
           Ror::SupportedMethods.send modus
         rescue
           false
+        end
+      end
+
+      def transform klass
+        case klass
+        when 'actionview', 'view', 'v'
+          'actionview'.to_sym
+        when 'actioncontroller', 'controller', 'c'
+          'actioncontroller'.to_sym
         end
       end
 
