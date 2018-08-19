@@ -7,11 +7,12 @@ module Ror
     desc "info METHOD CLASS", "Display info for the desired method"
     def info modus, klass = nil
       method_validated = klasses = validate? modus
-      if method_validated and !klass
+      if system_can_retrieve_class? method_validated, klass
         klass = get_klass modus, klasses
         klass_validated = true
       end
-      if (method_validated and valid_klass? klass, klasses)
+      klass_validated = valid_klass?(klass, klasses) if validation_passed? method_validated, !klass_validated
+      if validation_passed? method_validated, klass_validated
         return display_info(modus, klass)
       elsif !method_validated
         return method_does_not_exist_error
@@ -51,6 +52,10 @@ module Ror
         puts "Undefined class option: Use 'ror info #{modus}' to view class options."
       end
 
+      def system_can_retrieve_class? method_validated, klass
+        method_validated and !klass
+      end
+
       def validate? modus
         begin
           Ror::SupportedMethods.send modus
@@ -70,6 +75,10 @@ module Ror
         when 'actioncontroller', 'controller', 'c'
           'actioncontroller'.to_sym
         end
+      end
+
+      def validation_passed? method_validated, klass_validated
+        method_validated and klass_validated
       end
 
       def method_does_not_exist_error
