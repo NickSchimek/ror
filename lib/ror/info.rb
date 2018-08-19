@@ -35,13 +35,25 @@ module Ror
 
     def ror_class
       case @klass
-      when 'actionview', 'view', 'v'
+      when klass_paramter_has?(actionview_variations)
         Ror::Actionview
-      when 'actioncontroller', 'controller', 'c'
+      when klass_paramter_has?(actioncontroller_variations)
         Ror::Actioncontroller
       else
         display_class_error
       end
+    end
+
+    def klass_paramter_has? variations
+      @klass if variations.include? @klass
+    end
+
+    def actionview_variations
+      ['actionview', 'view', 'v']
+    end
+
+    def actioncontroller_variations
+      ['actioncontroller', 'controller', 'c']
     end
 
     def display_class_error
@@ -61,14 +73,14 @@ module Ror
     end
 
     def valid_klass? klasses
-      klasses.include? transform
+      klasses.include? klass_variation
     end
 
-    def transform
+    def klass_variation
       case @klass
-      when 'actionview', 'view', 'v'
+      when klass_paramter_has?(actionview_variations)
         'actionview'.to_sym
-      when 'actioncontroller', 'controller', 'c'
+      when klass_paramter_has?(actioncontroller_variations)
         'actioncontroller'.to_sym
       end
     end
