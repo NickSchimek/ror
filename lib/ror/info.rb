@@ -1,3 +1,5 @@
+require 'ror/validations'
+
 module Ror
   class Info
 
@@ -5,22 +7,14 @@ module Ror
       @modus = modus
       @klass = klass
       @klasses = klass_list
+      @validations = Ror::Validations.new @klasses, klass_variation
     end
 
     def show
-      method_validated = @klasses
-      if system_can_retrieve_class? method_validated
-        @klass = get_klass
-        klass_validated = true
-      end
-      klass_validated = valid_klass? if validation_passed? method_validated, !klass_validated
-      if validation_passed? method_validated, klass_validated
-        return display_info
-      elsif !method_validated
-        return method_does_not_exist_error
-      else
-        display_class_error
-      end
+      @klass = assign_klass if system_can_retrieve_class?
+      return display_info if @validations.valid?
+      return method_does_not_exist_error if !@validations.modus_valid?
+      display_class_error
     end
 
     private
@@ -36,16 +30,25 @@ module Ror
 
     def ror_class
       case @klass
-      when klass_paramter_has?(actionview_variations)
+      when klass_paramter(actionview_variations)
         Ror::Actionview
-      when klass_paramter_has?(actioncontroller_variations)
+      when klass_paramter(actioncontroller_variations)
         Ror::Actioncontroller
       else
         display_class_error
       end
     end
 
-    def klass_paramter_has? variations
+    def klass_variation
+      case @klass
+      when klass_paramter(actionview_variations)
+        'actionview'.to_sym
+      when klass_paramter(actioncontroller_variations)
+        'actioncontroller'.to_sym
+      end
+    end
+
+    def klass_paramter variations
       @klass if variations.include? @klass
     end
 
@@ -61,8 +64,8 @@ module Ror
       puts "Undefined class option: Use 'ror info #{@modus}' to view class options."
     end
 
-    def system_can_retrieve_class? method_validated
-      method_validated and !@klass
+    def system_can_retrieve_class?
+      @validations.modus_valid? and !@klass
     end
 
     def klass_list
@@ -73,28 +76,12 @@ module Ror
       end
     end
 
-    def valid_klass?
-      @klasses.include? klass_variation
-    end
-
-    def klass_variation
-      case @klass
-      when klass_paramter_has?(actionview_variations)
-        'actionview'.to_sym
-      when klass_paramter_has?(actioncontroller_variations)
-        'actioncontroller'.to_sym
-      end
-    end
-
-    def validation_passed? method_validated, klass_validated
-      method_validated and klass_validated
-    end
-
     def method_does_not_exist_error
       puts "Sorry, method not found. Feel free to add it to expand the knowledge store!"
     end
 
-    def get_klass
+    def assign_klass
+      @validations.mark_klass_assigned
       method_belongs_to_one_class? ? @klasses.first.to_s : ask_user
     end
 
