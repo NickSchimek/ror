@@ -71,12 +71,14 @@ module Ror
     end
 
     def ask_user
-      puts display_message, display_klasses, ask_for_input
+      puts display_message
+      display_klasses
+      print ask_for_input
       retrieve_selection
     end
 
     def display_message
-      "\nMultiple classes contain the #{@modus} method.\nFor:"
+      "\nMultiple classes contain the #{@modus} method.\n"
     end
 
     def display_klasses
@@ -86,15 +88,15 @@ module Ror
     end
 
     def actionview
-      "Actionview type 'view' or 'v'"
+      "  For: Actionview type 'view' or 'v'"
     end
 
     def actioncontroller
-      "Actioncontroller type 'controller' or 'c'"
+      "  For: Actioncontroller type 'controller' or 'c'"
     end
 
     def ask_for_input
-      "\nPlease choose a class for the #{@modus} method? "
+      "\n-> Please choose a class for the #{@modus} method? "
     end
 
     def retrieve_selection
