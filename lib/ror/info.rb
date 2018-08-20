@@ -7,7 +7,7 @@ module Ror
       @modus = modus
       @klass = klass
       @klasses = klass_list
-      @validations = Ror::Validations.new @klasses, klass_variation
+      @validations = Ror::Validations.new @klasses, retrieve_klass('symbol_req')
     end
 
     def show
@@ -24,40 +24,21 @@ module Ror
     end
 
     def method_class
-      result = ror_class
+      result = retrieve_klass
       result.send :show, @modus if result
     end
 
-    def ror_class
+    def retrieve_klass symbol_req = nil
       case @klass
-      when klass_paramter(actionview_variations)
+      when 'actionview', 'view', 'v'
+        return 'actionview'.to_sym if symbol_req
         Ror::Actionview
-      when klass_paramter(actioncontroller_variations)
+      when 'actioncontroller', 'controller', 'c'
+        return 'actioncontroller'.to_sym if symbol_req
         Ror::Actioncontroller
       else
-        display_class_error
+        display_class_error unless symbol_req
       end
-    end
-
-    def klass_variation
-      case @klass
-      when klass_paramter(actionview_variations)
-        'actionview'.to_sym
-      when klass_paramter(actioncontroller_variations)
-        'actioncontroller'.to_sym
-      end
-    end
-
-    def klass_paramter variations
-      @klass if variations.include? @klass
-    end
-
-    def actionview_variations
-      ['actionview', 'view', 'v']
-    end
-
-    def actioncontroller_variations
-      ['actioncontroller', 'controller', 'c']
     end
 
     def display_class_error
