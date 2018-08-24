@@ -24,4 +24,13 @@ RSpec.describe Ror::CLI do
     expect(Ror::SupportedMethods).to receive(:render).and_return([:actionview])
     expect { Ror::CLI.new.info 'render', 'actioncontroller' }.to output("Undefined class option: Use 'ror info render' to view class options.\n").to_stdout
   end
+
+  it 'asks user for input when missing class parameter' do
+    message = "\nMultiple classes contain the render method.\n  For: Actionview type 'view' or 'v'\n "
+    message << " For: Actioncontroller type 'controller' or 'c'\n\n-> Please choose a class for the render method? "
+    allow(Ror::SupportedMethods).to receive(:render).and_return([:actionview, :actioncontroller])
+    allow(STDIN).to receive(:gets).and_return('c')
+    allow(IO).to receive(:popen)
+    expect { Ror::CLI.new.info 'render' }.to output(message).to_stdout
+  end
 end
