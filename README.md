@@ -1,13 +1,11 @@
 # Ror
-#### Finally a gem that add zero value for your project! Read on to find out how.
+#### Finally the Ror gem is here!
 
-A CLI tool that displays required and optional parameters for rails methods. This is not a replacement for actual Rails documentation, but rather to make it more convenient a for quick look up of method syntax & parameters along with some general/important info, and a link to the Rails method documentation!
+A CLI tool that displays required and optional parameters for rails methods. This is not a replacement for actual Rails documentation, but rather to make it more convenient to quickly look up a method's syntax & parameters along with some general/important info, and a link to the Rails method documentation!
 
-You may be wondering how this is possible? Well after many white papers and proof of concepts along with thousands of scientists all over the world verifying the work not done here we can say with 100% confidence that you should absolutely not depend on the information expelled here and that the links are included so that PR's can be created stating how wrong we are.
+Why might this be useful? If your a full-time rails developer you may not need this, but individuals who develop as a hobby or newcomers to the language might find this CLI fast and easy to use so that they can get on coding and spend less time navigating a browser! or [dash](https://kapeli.com/dash) or [devdocs](https://devdocs.io/) which are great tools! and come highly recommended.
 
-Why is this needed? If your a full-time rails developer you may not need this, but individuals who develop as a hobby or newcomers to the language might find this CLI fast and easy to use so that they can get on coding and spend less time navigating a browser! or [dash](https://kapeli.com/dash) or [devdocs](https://devdocs.io/) which are great tools! and come highly recommended.
-
-Currently the ror CLI contains very few methods as method information is not pulled from any online resource since it is 100% manual entry. It is this way for one main reason, and that is so that any individual who wishes to contribute (including yours truly) can learn about rails methods while contributing to a gem.
+Currently the ror CLI contains very few methods (if any at all) as method information is not pulled from any online resource since it is 100% manual entry. It is this way for one main reason, and that is so that any individual who wishes to contribute (including yours truly) can learn about rails methods (by teaching through writing) while contributing to a gem.
 
 I feel the most can be gained when the user tries to recall the syntax/parameters for a method, before using this tool. The more that is done the sooner the brain will believe the information is important.
 
@@ -15,33 +13,96 @@ Please visit and dive deep into the [Rails guide and documentation](http://guide
 
 ## Installation
 
-Add this line to your application's Gemfile:
+This is currently not published, but if you wish to install it.
 
-```ruby
-group :development do
-  gem 'ror'
-end
+Fork, and clone the repo.
+
+Then run:
+```
+    $ rake build
+    > ror 0.1.0 built to pkg/ror-0.1.0.gem.
+```
+copy the files output location and run
+```
+    $ gem install pkg/ror-0.1.0.gem
 ```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install ror
+You can then follow the usage guidelines below.
 
 ## Usage
 
-TODO: Write usage instructions here
+Run:
+```
+    $ ror info 'method_name'
+```
+which will either display the information for the method or if the method is used in multiple classes then it will give you a choice of which classes you can choose from.
 
-## Development
+If you know which class you want to look at add it in like this:
+```
+    $ ror info 'method_name' 'class'
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Here are some examples.
+```
+    $ ror info render
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Which displays:
+```
+Multiple classes contain the render method.
+  For: Actionview type 'view' or 'v'
+  For: Actioncontroller type 'controller' or 'c'
+
+-> Please choose a class for the render method?
+```
+
+If you know the class then append it in at the end:
+```
+    $ ror info render actionview
+```
+You can also use `view` or `v` as an alias for actionview.
+
+Likewise you can use the alias `controller` or `c` for actioncontroller.
+```
+    $ ror info render c
+```
+
+The method information is displayed the same way man pages are. That way the output doesn't clutter the terminal.
 
 ## <a name="contributing"></a>Contributing
+
+Fork, clone, and bundle. Then run `rake test` to run the tests.
+
+This gem comes with a generator to add new method descriptions.
+Simply run:
+```
+    $ ror new_method [method name] [class1 class2 ...]
+```
+
+### Examples:
+#### 1:
+I want to add the `partial` method wich is used in views under the `Actionview` class.
+Then I run:
+```
+    $ ror new_method partial actionview
+```
+And it generates the template, and other necessary code for it to work.
+
+Then update the generated template with information on the partial method. And do a pull request.
+
+#### 2:
+I want to add the `render` method which is used in controllers and views.
+Then I run:
+```
+    $ ror new_method render actionview actioncontroller
+```
+It automatically creates the template, and generates necessary code for it to run.
+
+Then update both templates.
+
+The templates will be located in `lib/ror/method_descriptions` under the corresponding class folder name.
+
+In you wish to test or use the new methods right away then the gem will need to be reinstalled by doing `rake build` and then the gem install command on the output file provided by rake build.
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/NickSchimek/ror.
 
