@@ -6,9 +6,19 @@ module Ror
 
     desc "info METHOD CLASS", "Display info for the desired method"
     def info modus, klass = nil
-      method_validated = validate? modus
-      klass = get_klass modus if method_validated and !klass
-      method_validated ? display_info(modus, klass) : method_does_not_exist_error
+      method_validated = klasses = validate? modus
+      if system_can_retrieve_class? method_validated, klass
+        klass = get_klass modus, klasses
+        klass_validated = true
+      end
+      klass_validated = valid_klass?(klass, klasses) if validation_passed? method_validated, !klass_validated
+      if validation_passed? method_validated, klass_validated
+        return display_info(modus, klass)
+      elsif !method_validated
+        return method_does_not_exist_error
+      else
+        display_class_error modus
+      end
     end
 
     desc "new_method", "Generates a scaffold for adding new methods"
@@ -34,8 +44,16 @@ module Ror
         when 'actioncontroller', 'controller', 'c'
           Ror::Actioncontroller
         else
-          puts "Undefined class option: Use 'ror info #{modus}' to view class options."
+          display_class_error modus
         end
+      end
+
+      def display_class_error modus
+        puts "Undefined class option: Use 'ror info #{modus}' to view class options."
+      end
+
+      def system_can_retrieve_class? method_validated, klass
+        method_validated and !klass
       end
 
       def validate? modus
@@ -46,38 +64,48 @@ module Ror
         end
       end
 
-      def method_does_not_exist_error
-        puts "Sorry, method not found. Please add it and submit a PR"
+      def valid_klass? klass, klasses
+        klasses.include? transform(klass)
       end
 
-      def get_klass modus
-        class_list = list_of modus
-        extract_class class_list, modus
-      end
-
-      def list_of modus
-        Ror::SupportedMethods.send modus
-      end
-
-      def extract_class class_list, modus
-        method_belongs_to_one_class?(class_list) ? class_list.first.to_s : ask_user(class_list, modus)
-      end
-
-      def method_belongs_to_one_class? class_list
-        class_list.length == 1
-      end
-
-      def ask_user class_list, modus
-        puts "\nMultiple classes contain the #{modus} method.\nFor:"
-        class_list.each do |klass|
-          puts send(klass)
+      def transform klass
+        case klass
+        when 'actionview', 'view', 'v'
+          'actionview'.to_sym
+        when 'actioncontroller', 'controller', 'c'
+          'actioncontroller'.to_sym
         end
-        print "\nPlease choose a class for the #{modus} method? "
+      end
+
+      def validation_passed? method_validated, klass_validated
+        method_validated and klass_validated
+      end
+
+      def method_does_not_exist_error
+        puts "Sorry, method not found. Feel free to add it to expand the knowledge store!"
+      end
+
+      def get_klass modus, klasses
+        method_belongs_to_one_class?(klasses) ? klasses.first.to_s : ask_user(klasses, modus)
+      end
+
+      def method_belongs_to_one_class? klasses
+        klasses.length == 1
+      end
+
+      def ask_user klasses, modus
+        puts display_message(modus), display_klasses(klasses), ask_for_input(modus)
         retrieve_selection
       end
 
-      def retrieve_selection
-        STDIN.gets.chomp
+      def display_message modus
+        "\nMultiple classes contain the #{modus} method.\nFor:"
+      end
+
+      def display_klasses klasses
+        klasses.each do |klass|
+          puts send(klass)
+        end
       end
 
       def actionview
@@ -86,6 +114,14 @@ module Ror
 
       def actioncontroller
         "Actioncontroller type 'controller' or 'c'"
+      end
+
+      def ask_for_input modus
+        "\nPlease choose a class for the #{modus} method? "
+      end
+
+      def retrieve_selection
+        STDIN.gets.chomp
       end
   end
 end
