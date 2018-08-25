@@ -61,14 +61,14 @@ module Ror
 
     def assign_klass
       @validations.mark_klass_assigned
-      method_belongs_to_one_class? ? @klasses.first.to_s : ask_user
+      method_belongs_to_one_class? ? @klasses.first.to_s : ask_user_for_class
     end
 
     def method_belongs_to_one_class?
       @klasses.length == 1
     end
 
-    def ask_user
+    def ask_user_for_class
       puts display_message
       display_klasses
       print ask_for_input
