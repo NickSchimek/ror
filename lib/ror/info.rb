@@ -40,7 +40,7 @@ module Ror
     end
 
     def display_class_error
-      puts "Undefined class option: Use 'ror info #{@modus}' to view class options."
+      puts "Undefined class option:"
     end
 
     def system_can_retrieve_class?
