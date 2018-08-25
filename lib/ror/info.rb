@@ -36,8 +36,6 @@ module Ror
       when 'actioncontroller', 'controller', 'c'
         return 'actioncontroller'.to_sym if symbol_req
         Ror::Actioncontroller
-      else
-        display_class_error unless symbol_req
       end
     end
 
