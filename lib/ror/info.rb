@@ -15,6 +15,8 @@ module Ror
       return display_info if @validations.valid?
       return method_does_not_exist_error if !@validations.modus_valid?
       display_class_error
+      @klass = ask_user_for_class
+      display_info
     end
 
     private
