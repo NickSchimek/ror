@@ -48,5 +48,11 @@ RSpec.describe Ror::CLI do
       allow(IO).to receive(:popen)
       expect { Ror::CLI.new.info 'render', 'bar' }.to output(message).to_stdout
     end
+
+    it 'notifies user that invalid option was chosen' do
+      allow(Ror::SupportedMethods).to receive(:render).and_return([:actionview, :actioncontroller])
+      allow(STDIN).to receive(:gets).and_return('invalid option')
+      expect { Ror::CLI.new.info 'render', 'bar' }.to output(/.*invalid option$/).to_stdout
+    end
   end
 end
