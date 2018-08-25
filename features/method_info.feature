@@ -7,10 +7,6 @@ Feature: Display method render
     When I run `ror info render view`
     Then the output should contain "Method: render\n Class: Actionview"
 
-  Scenario: Responds to invalid klass option
-    When I run `ror info render DHH`
-    Then the output should contain "Undefined class option: Use 'ror info render' to view class options."
-
   Scenario: Display Actioncontrollers render method
     When I run `ror info render controller`
     Then the output should contain "Method: render\n Class: Actioncontroller"
