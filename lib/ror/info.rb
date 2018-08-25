@@ -15,6 +15,8 @@ module Ror
       return display_info if @validations.valid?
       return method_does_not_exist_error if !@validations.modus_valid?
       display_class_error
+      @klass = ask_user_for_class
+      display_info
     end
 
     private
@@ -37,12 +39,12 @@ module Ror
         return 'actioncontroller'.to_sym if symbol_req
         Ror::Actioncontroller
       else
-        display_class_error unless symbol_req
+        puts "invalid option" unless symbol_req
       end
     end
 
     def display_class_error
-      puts "Undefined class option: Use 'ror info #{@modus}' to view class options."
+      puts "Undefined class option:"
     end
 
     def system_can_retrieve_class?
@@ -63,14 +65,14 @@ module Ror
 
     def assign_klass
       @validations.mark_klass_assigned
-      method_belongs_to_one_class? ? @klasses.first.to_s : ask_user
+      method_belongs_to_one_class? ? @klasses.first.to_s : ask_user_for_class
     end
 
     def method_belongs_to_one_class?
       @klasses.length == 1
     end
 
-    def ask_user
+    def ask_user_for_class
       puts display_message
       display_klasses
       print ask_for_input
