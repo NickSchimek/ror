@@ -38,6 +38,8 @@ module Ror
       when 'actioncontroller', 'controller', 'c'
         return 'actioncontroller'.to_sym if symbol_req
         Ror::Actioncontroller
+      else
+        puts "invalid option" unless symbol_req
       end
     end
 
